@@ -9,14 +9,13 @@
 
 To create simple pods with images:
 
-By default it will use the 'latest' image tag
-
 ```
 $ kubectl run <deployment_name>  --image=<image>
-
 i.e
 $ kubectl run nginx --image=nginx
 ```
+
+By default it will use the 'latest' image tag
 
 
 
@@ -50,7 +49,8 @@ These pods will take about a minute to be in running state
 ```
 $ kubectl get pods -o wide
 
-NAME                     READY   STATUS    RESTARTS   AGE    IP          NODE          nginx-7db9fccd9b-flxb6   1/1     Running   0          2m5s   10.36.0.1   cherrypi
+NAME                     READY   STATUS    RESTARTS   AGE    IP          NODE
+nginx-7db9fccd9b-flxb6   1/1     Running   0          2m5s   10.36.0.1   cherrypi
 nginx-7db9fccd9b-kl4zx   1/1     Running   0          11m    10.44.0.1   blueberrypi
 ```
 
