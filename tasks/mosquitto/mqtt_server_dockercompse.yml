@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  mqtt_server:
+    image: eclipse-mosquitto
+    hostname: mosquitto
+    container_name: mosquitto
+    volumes:
+
+      - /efs/mosquitto/data:/mosquitto/data
+      - /efs/mosquitto/log:/mosquitto/log
+    ports:
+      - 1883:1883
+      - 9001:9001
+    networks:
+      - messaging-queue
+
+networks:
+  messaging-queue:
+    driver: bridge
