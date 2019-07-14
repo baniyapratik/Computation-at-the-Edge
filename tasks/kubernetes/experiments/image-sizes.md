@@ -99,4 +99,24 @@ Cluster is now behaving and working properly
 Just for kicks, I tried scaling to 70 replicas and the same issue occurred. So the limit is somewhere between 50 - 70 replicas for nginx containers.
 
 
+**Update**
+
+Scaled to 60 Nginx pods. Essentially, limited memory is what is causing the crashes. After scaling, memory on each worker is listed below.
+
+Worker 1:
+```
+$ free -m
+              total        used        free      shared  buff/cache   available
+Mem:            926         511         162          22         252         330
+Swap:             0           0           0
+```
+
+Worker 2:
+
+```
+$ free -m
+              total        used        free      shared  buff/cache   available
+Mem:            926         507         160          16         258         341
+Swap:             0           0           0
+```
 
