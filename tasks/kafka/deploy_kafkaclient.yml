@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafkaclient
+spec:
+  selector:
+    matchLabels:
+      app: kafkaclient
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kafkaclient
+  
+    spec:
+      hostname: kafkaclient
+      containers:
+      - name: kafkaclient 
+        image: rgarb12/rasp-kclient2
+        imagePullPolicy: Always
