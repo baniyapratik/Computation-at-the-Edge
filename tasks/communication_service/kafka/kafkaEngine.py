@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/home/kafka2') 
+sys.path.append('../../tasks') 
 
 from communication_service.communication import Communication
 #from communication import Communication
