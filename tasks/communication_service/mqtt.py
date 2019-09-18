@@ -1,20 +1,21 @@
 from communication import Communication
 import paho.mqtt.client as mqtt
 import time
+import configparser
 
 class MQTT(Communication):
-	def publish(self, topic, message):
+	def publish(self, broker, topic, message):
 		print("publishing the message '" + message + "' to the topic '" + topic + "'")
 
-		paho_client.connect("localhost", 1883, 60)
+		paho_client.connect(broker, 1883, 60)
 		paho_client.loop_start()
 
 		infot = paho_client.publish(topic, message, qos=2)
 		infot.wait_for_publish()
 
-	def subscribe(self, topic):
+	def subscribe(self, broker, topic):
 		print("subscribing to topic '" + topic + "'")
-		paho_client.connect("localhost", 1883, 60)
+		paho_client.connect(broker, 1883, 60)
 		paho_client.subscribe(topic, 0)
 		paho_client.loop_start()
 		time.sleep(5)
@@ -36,6 +37,10 @@ def on_publish(paho_client, obj, mid):
 def on_subscribe(paho_client, obj, mid, granted_qos):
     print("Subscribed: " + str(mid) + " " + str(granted_qos))
 
+config = configparser.ConfigParser()
+config.read('communication.conf')
+
+mqtt_broker = config['mqtt']['broker']
 
 paho_client = mqtt.Client()
 paho_client.on_message = on_message
@@ -43,8 +48,6 @@ paho_client.on_connect = on_connect
 paho_client.on_publish = on_publish
 paho_client.on_subscribe = on_subscribe
 
-
 client = MQTT()
-#client.create_topic()
-#client.publish("test/message", "something else")
-client.subscribe("test/data")
+client.publish(mqtt_broker, "test/message", "something else")
+#client.subscribe(mqtt_broker, "test/data")
