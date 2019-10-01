@@ -1,0 +1,4 @@
+Flask==1.1.1
+paho-mqtt==1.4.0
+bson==0.5.8
+pytz==2019.2
