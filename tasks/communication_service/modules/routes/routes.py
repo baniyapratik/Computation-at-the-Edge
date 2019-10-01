@@ -3,7 +3,7 @@ from mqtt import MQTT
 # from mqtt.MQTT import client, server
 
 from communication_service.ext.api import APIResponse
-
+from communication_service.kafka_ext.common import kafka_buffer, kafka_get
 mod = Blueprint('gateway', __name__, url_prefix='/api/communication')
 
 @mod.route('test', methods=['GET'], strict_slashes=False)
@@ -19,9 +19,6 @@ def publish(topic):
 	client.publish("localhost", topic, message)
 	return APIResponse("Published message: " + message + " to topic: " + topic)
 
-	# publish test with curl
-	#curl -d '{"topic":"test/message", "message":"yas"}' -H "Content-Type: application/json" -X POST http://localhost:5000/api/communication/publish
-
 @mod.route('subscribe/<string:topic>', methods=['GET'], strict_slashes=False)
 def subscribe(topic):
 	# limit check ?limit=100
@@ -29,3 +26,14 @@ def subscribe(topic):
 	server = MQTT()
 	data = server.subscribe("localhost", topic, limit)
 	return APIResponse(data)
+
+@mod.route('/process/<string:topic>', methods=['POST'], strict_slashes=False)
+def process_data(topic):
+    data = request.get_json()
+    response = kafka_buffer(data,topic)
+    return jsonify(data)
+
+@app.route('/getdata/<string:topic>',methods=['GET'], strict_slashes=False)
+def get_data(topic):
+   response=kafka_get(topic)
+   return APIResponse(response)
