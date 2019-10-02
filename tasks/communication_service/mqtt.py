@@ -42,12 +42,6 @@ def on_publish(paho_client, obj, mid):
 def on_subscribe(paho_client, obj, mid, granted_qos):
     print("Subscribed: " + str(mid) + " " + str(granted_qos))
 
-#config = configparser.ConfigParser()
-#config.read('communication.conf')
-
-#mqtt_broker = config['mqtt']['broker']
-#standardize hostname
-
 paho_client = mqtt.Client()
 paho_client.on_message = on_message
 paho_client.on_connect = on_connect
