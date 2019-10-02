@@ -1,10 +1,8 @@
 import logging
-import socket
 import os
-#from utils.notification import Spark, SparkError
-from flask import request
 from logging.handlers import WatchedFileHandler
 import random
+import platform
 
 SECURITY_LOG_DIR = os.path.abspath(os.path.dirname('__file__'))
 PROJECT_ROOT = os.path.abspath(os.path.dirname('__file__'))
@@ -13,9 +11,6 @@ ENV_ROOT = os.path.dirname(os.path.dirname(PROJECT_ROOT))
 # REVIEW_BOT_LIST = os.path.join(PROJECT_ROOT, 'cafy_words_list.txt')
 JOB_DIR = os.path.join(ENV_ROOT, 'job_folder')
 LOG_DIR = os.path.join(ENV_ROOT, 'log_folder')
-print(f"Log DIR {LOG_DIR}")
-print(f"ENV ROOT {ENV_ROOT}")
-print(f"PROJECT  {PROJECT_ROOT}")
 LOG_LEVEL = 'DEBUG'
 LOG_RATE = 1
 
@@ -26,7 +21,7 @@ DEFAULT_HANDLER = logging.StreamHandler
 DEFAULT_FORMATTER = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 SIMPLE_FORMATTER = logging.Formatter('%(asctime)s - %(message)s')
 
-
+#This class make sure that every application that run this module
 class ModWatchedFileHandler(WatchedFileHandler):
 
     def _open(self):
@@ -49,7 +44,6 @@ class LogFactory:
                  ):
         """
         :param name: log name, log file will be named to <name>.log
-        :param app: flask app
         :param level: log level
         :param handler: log handler class
         :param tuple handler_args: custom log handler's parameters, (args, kwargs)
@@ -61,23 +55,14 @@ class LogFactory:
         self.handler_args = handler_args
         self.formatter = formatter
         self.logger = None
-        #if app is not None:
-            #self.init_app(app)
         self.init_app()
 
     def init_app(self):
         log_dir = LOG_DIR
-
-        #print(log_dir)
-
-        #app.config['LOG_DIR'] = os.environ.get("LOG_DIR", "./")
-
         self.level = getattr(logging,LOG_LEVEL, DEFAULT_LEVEL)
         # cafy log name example cafy.gateway.app, cafy.api.action
         # and their log type name will be app and action
 
-        #Determinging if log is security log or not.
-        import platform
         log_type_name = self.name.rsplit('.', 1)
         # we may want to put the security log to a different folder
         if log_type_name == 'security':
@@ -89,7 +74,6 @@ class LogFactory:
         log_file_name = '.'.join([
             log_type_name,
             platform.node(), "prod"]) + '.log'
-
         if self.handler_cls is logging.StreamHandler:
             hdl = self._init_handler()
         else:
@@ -116,15 +100,6 @@ class LogFactory:
         logger = logging.getLogger(self.name)
         logger.addHandler(hdl)
         logger.setLevel(self.level)
-
-        class RateLimitFilter(logging.Filter):
-            def filter(self, record):
-                if (LOG_RATE, 1) < 1:
-                    if not getattr(request, 'current_user', None):
-                        return False
-                    elif random.random() < (1 - (LOG_RATE, 1)):
-                        return False
-                return True
 
         self.logger = logger
 
