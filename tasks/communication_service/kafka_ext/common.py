@@ -9,7 +9,7 @@ def get_kafka_producer():
     return KafkaProducer(
         bootstrap_servers=['10.46.0.1:9092',
                            '10.38.0.1:9092',
-                           '10.40.0.4:9092'],
+                           '10.40.0.1:9092'],
         value_serializer=lambda v: json.dumps(v).encode('utf-8'),
         request_timeout_ms=20000)
 
@@ -17,7 +17,7 @@ def get_kafka_consumer():
     return KafkaConsumer(
         bootstrap_servers=['10.46.0.1:9092',
                            '10.38.0.1:9092',
-                           '10.40.0.4:9092'],
+                           '10.40.0.1:9092'],
         auto_offset_reset='earliest',
         consumer_timeout_ms=1000)
 #        value_serializer=lambda v: json.loads(v).encode('utf-8'))
