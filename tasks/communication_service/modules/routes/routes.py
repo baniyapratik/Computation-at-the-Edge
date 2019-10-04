@@ -33,7 +33,7 @@ def process_data(topic):
     response = kafka_buffer(data,topic)
     return jsonify(data)
 
-@app.route('/getdata/<string:topic>',methods=['GET'], strict_slashes=False)
+@mod.route('/getdata/<string:topic>',methods=['GET'], strict_slashes=False)
 def get_data(topic):
    response=kafka_get(topic)
    return APIResponse(response)
