@@ -5,6 +5,7 @@ RUN apt-get install python3 -y
 RUN apt-get install python3-pip -y
 RUN apt-get install vim -y
 RUN apt-get install curl -y
+RUN apt-get install jq -y
 
 COPY communication_service /home/communication_service
 RUN chmod 755 -R /home/communication_service/*.py
