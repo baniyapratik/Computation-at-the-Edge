@@ -36,4 +36,5 @@ def process_data(topic):
 @mod.route('/getdata/<string:topic>',methods=['GET'], strict_slashes=False)
 def get_data(topic):
    response=kafka_get(topic)
-   return APIResponse(response)
+   #return APIResponse(response)
+   return str(response)
