@@ -2,9 +2,9 @@ from kafka import KafkaProducer, KafkaConsumer
 import json
 import jsonify 
 import time
+from communication_service.utils.logger import LogFactory, ModWatchedFileHandler, SIMPLE_FORMATTER, DEFAULT_LEVEL
 
 
-producer = KafkaProducer(bootstrap_servers='10.46.0.1:9092')
 def get_kafka_producer():
     return KafkaProducer(
         bootstrap_servers=['10.46.0.1:9092',
@@ -23,10 +23,14 @@ def get_kafka_consumer():
 #        value_serializer=lambda v: json.loads(v).encode('utf-8'))
 
 
-
-
-consumer = get_kafka_consumer()
-
+#Test code
+try:
+  consumer = get_kafka_consumer()
+except Exception as e:
+  edgelogs = LogFactory('edge-cluster', handler=ModWatchedFileHandler, formatter=SIMPLE_FORMATTER)
+  edgelogs.error(str(e))
+  
+   
 
 producer=get_kafka_producer()
 
