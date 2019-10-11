@@ -24,10 +24,10 @@ def get_kafka_consumer():
 
 
 #Test code
+edgelogs = LogFactory('edge-cluster', handler=ModWatchedFileHandler, formatter=SIMPLE_FORMATTER)
 try:
   consumer = get_kafka_consumer()
 except Exception as e:
-  edgelogs = LogFactory('edge-cluster', handler=ModWatchedFileHandler, formatter=SIMPLE_FORMATTER)
   edgelogs.error(str(e))
   
    
