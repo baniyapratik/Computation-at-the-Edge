@@ -1,3 +1,3 @@
-from logger import LogFactory, ModWatchedFileHandler, SIMPLE_FORMATTER, DEFAULT_LEVEL
+from logger import LogFactory, ModWatchedFileHandler, DEFAULT_FORMATTER, Log_Folder_Name
 
-myLogs = LogFactory('edge-test', handler=ModWatchedFileHandler, formatter=SIMPLE_FORMATTER)
+myLogs = LogFactory(Log_Folder_Name, handler=ModWatchedFileHandler, formatter=DEFAULT_FORMATTER)

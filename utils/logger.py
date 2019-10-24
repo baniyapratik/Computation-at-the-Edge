@@ -2,26 +2,40 @@ import logging
 import os
 from logging.handlers import WatchedFileHandler
 import random
-import platform
+import platform, re
+from collections import OrderedDict
 
-SECURITY_LOG_DIR = os.path.abspath(os.path.dirname('__file__'))
-PROJECT_ROOT = os.path.abspath(os.path.dirname('__file__'))
-ENV_ROOT = os.path.dirname(os.path.dirname(PROJECT_ROOT))
-
-# REVIEW_BOT_LIST = os.path.join(PROJECT_ROOT, 'cafy_words_list.txt')
-JOB_DIR = os.path.join(ENV_ROOT, 'job_folder')
-LOG_DIR = os.path.join(ENV_ROOT, 'log_folder')
-LOG_LEVEL = 'DEBUG'
-LOG_RATE = 1
-
-EXT_NAME = 'loggers'
+"""
+     logging.StreamHandler: Sends logging output to streams such as stderr/out
+     logging.FORMATTER: Specify the layout of log record
+"""
 
 DEFAULT_LEVEL = logging.DEBUG
 DEFAULT_HANDLER = logging.StreamHandler
-DEFAULT_FORMATTER = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+DEFAULT_FORMATTER = logging.Formatter(' %(levelname)s - %(asctime)s - %(message)s')
 SIMPLE_FORMATTER = logging.Formatter('%(asctime)s - %(message)s')
+confg_path = os.path.dirname(os.path.abspath(__file__)) + '/config.txt'
+temp_dict = OrderedDict()
 
-#This class make sure that every application that run this module
+with open(confg_path) as fp:
+    for line in fp:
+        l = []
+        l.append(line.split('='))
+        n = l[0][0]
+        m = re.search('=.+', line).group(0)
+        m = m.replace('=', '').strip()
+        temp_dict[str(n)] = m
+
+fp.close()
+info = list(temp_dict.items())
+Path = info[0][1]
+Log_Folder_Name = info[1][1]
+EXT_NAME = 'loggers'
+LOG_DIR = Path + '/' + Log_Folder_Name
+
+# This class make sure that every application -
+# that run this module access the path and be -
+# able to write on it.
 class ModWatchedFileHandler(WatchedFileHandler):
 
     def _open(self):
@@ -59,27 +73,20 @@ class LogFactory:
 
     def init_app(self):
         log_dir = LOG_DIR
-        self.level = getattr(logging,LOG_LEVEL, DEFAULT_LEVEL)
-        # cafy log name example cafy.gateway.app, cafy.api.action
-        # and their log type name will be app and action
-
+        # If log file with specified names exist
         log_type_name = self.name.rsplit('.', 1)
-        # we may want to put the security log to a different folder
-        if log_type_name == 'security':
-            log_dir = SECURITY_LOG_DIR or log_dir
         if len(log_type_name) == 1:
             log_type_name = log_type_name[0]
         else:
             log_type_name = log_type_name[1]
-        log_file_name = '.'.join([
-            log_type_name,
-            platform.node(), "prod"]) + '.log'
+        log_file_name = info[2][1].strip() + '.log'
         if self.handler_cls is logging.StreamHandler:
             hdl = self._init_handler()
         else:
+            #if 'log_folder' or any other specifies name doesn't exist, create it.
             if not os.path.exists(log_dir):
-
                 os.makedirs(log_dir, exist_ok=True)
+
             # create a folder to group time rotating logs
             if issubclass(self.handler_cls, logging.FileHandler):
                 # Make a directory for the log file, this directory will
