@@ -16,7 +16,8 @@ class MQTT(Communication):
 
 	def subscribe(self, broker, topic, limit=10):
 		print("subscribing to topic '" + topic + "'")
-		datas = subscribe.simple(topic, 0, msg_count=int(limit), hostname="localhost", port=1883)
+		#datas = subscribe.simple(topic, 0, msg_count=int(limit), hostname="localhost", port=1883)
+		datas = subscribe.simple(topic, 0, msg_count=int(limit), hostname="mqtt-broker-service.default.svc.cluster.local", port=1883)
 		my_list = []
 		for data in datas:
 			my_list.append({
