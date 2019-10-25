@@ -190,7 +190,11 @@ setw synchronize-panes
        --discovery-token-ca-cert-hash sha256:e4da4224d17ed4dcfc18c73f2c9b1d8cc9b96e18c09150e0659ad57292ae698d
    ```
 
+Note: In case you forget the join command, on the master node:
 
+   ```
+   kubeadm token create --print-join-command
+   ```
 
 ### Back on the Master Node
 

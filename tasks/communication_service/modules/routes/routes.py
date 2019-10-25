@@ -16,7 +16,8 @@ def publish(topic):
 	data = request.get_json()
 	#topic = data.get('topic', '')
 	message = data.get('message', '')
-	client.publish("localhost", topic, message)
+	#client.publish("localhost", topic, message)
+	client.publish("mqtt-broker-service.default.svc.cluster.local", topic, message)
 	return APIResponse("Published message: " + message + " to topic: " + topic)
 
 @mod.route('subscribe/<string:topic>', methods=['GET'], strict_slashes=False)
@@ -24,7 +25,8 @@ def subscribe(topic):
 	# limit check ?limit=100
 	limit = request.args.get('limit') or 10
 	server = MQTT()
-	data = server.subscribe("localhost", topic, limit)
+	#data = server.subscribe("localhost", topic, limit)
+	data = server.subscribe("mqtt-broker-service.default.svc.cluster.local", topic, limit)
 	return APIResponse(data)
 
 @mod.route('/process/<string:topic>', methods=['POST'], strict_slashes=False)
