@@ -1,0 +1,39 @@
+version: "2"
+services:
+  redis:
+    container_name: "docker-redis"
+    image: redis
+    ports:
+      - "6379:6379"
+  mongo:
+      container_name: "docker-mongod"
+      image: mongo
+      ports:
+        - "27017:27017"
+  onboarding:
+    container_name: docker-onboarding
+    restart: always
+    build:
+      context: ./onboarding/server/
+      dockerfile: Dockerfile
+    depends_on:
+      - mongo
+    ports:
+      - "5001:5001"
+    links:
+      - mongo
+  monitoring-server:
+      container_name: docker-monitoring-server
+      restart: always
+
+      build:
+        context: ./monitoring/
+        dockerfile: ServerDockerfile
+      depends_on:
+        - mongo
+        - redis
+      ports:
+        - "5002:5002"
+      links:
+        - mongo
+        - redis

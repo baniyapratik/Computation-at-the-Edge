@@ -1,0 +1,8 @@
+version: "2"
+services:
+  monitoring-client:
+      container_name: docker-monitoring-client
+      restart: always
+      build:
+        context: .
+        dockerfile: ClientDockerfile
