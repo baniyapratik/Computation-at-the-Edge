@@ -10,6 +10,7 @@ services:
       image: mongo
       ports:
         - "27017:27017"
+      
   onboarding:
     container_name: docker-onboarding
     restart: always
@@ -37,3 +38,11 @@ services:
       links:
         - mongo
         - redis
+      networks:
+        static-network:
+          ipv4_address: 172.168.3.23
+networks:
+  static-network:
+    ipam:
+      config:
+        - subnet: 172.168.3.0/16

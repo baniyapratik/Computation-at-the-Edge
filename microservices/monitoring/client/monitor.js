@@ -1,7 +1,7 @@
 const os = require('os');
 const io = require('socket.io-client');
 
-let socket = io('http://172.28.0.5:5002');
+let socket = io('http://172.168.3.24:5002');
 const keys = require('../config/keys');
 
 socket.on('connect', () => {

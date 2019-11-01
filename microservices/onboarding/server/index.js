@@ -44,3 +44,4 @@ require('./routes/nodeRoutes')(app);
 // start the server
 const PORT = process.env.PORT || 5001;
 app.listen(PORT);
+module.exports.app = app;

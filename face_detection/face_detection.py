@@ -6,6 +6,11 @@ import os
 import cv2
 import requests
 import json
+import datetime
+import hashlib
+from uuid import getnode as get_mac
+
+DEVICE_TYPE = "web-cam"
 
 publish_endpoint='http://localhost:5000/api/communication/publish/face'
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -31,15 +36,25 @@ def detect(gray, original_frame):
         roi_gray = gray[y:y+h, x: x+w]
         roi_color = original_frame[y:y+h, x: x+w]
         sub_face = original_frame[y:y+h, x:x+w]
-        requests.post(publish_endpoint, json={'topic':'face', 'message': str(sub_face)})
+
+        payload = {
+                    'topic':'face',
+                    'message': str(sub_face),
+                    'current_time': get_current_time(),
+                    'device_type': DEVICE_TYPE,
+                    'mac_address': get_mac_address(),
+                    'check_sum': get_md5_hash(sub_face)
+                    }
+        
+        requests.post(publish_endpoint, json=payload)
         #cv2.imshow('Face', sub_face)
         smiles = smile_cascade.detectMultiScale(roi_gray, 1.7, 22)
         for (sx, sy, sw, sh) in smiles:
             cv2.rectangle(roi_color, (sx, sy), (sx+sw, sy+sh), smile_rectangle_color, rectangle_thickness)
-    return original_frame    
+    return original_frame
 
 
-# generate sketch 
+# generate sketch
 def sketch(image):
     # convert image to gray scale
     img_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -47,12 +62,32 @@ def sketch(image):
     img_gray_blur = cv2.GaussianBlur(image, (5,5), 0)
     # extract edges
     edges = cv2.Canny(img_gray_blur, 20, 70)
-    
+
     ret, mask = cv2.threshold(edges, 70, 255, cv2.THRESH_BINARY_INV)
     return mask
 
 # face recognition with webcam
 video_capture = cv2.VideoCapture(0)
+
+def get_md5_hash(data):
+    """
+    This function is responsible for getting the md5 sum of the data
+    """
+
+    return hashlib.md5(str(data).encode()).hexdigest()
+
+def get_current_time():
+    """
+    This function is responsible for getting the currrent time
+    """
+    return str(datetime.datetime.now())
+
+def get_mac_address():
+    """
+    This function is responsible for getting the mac address of the device
+    """
+    mac = get_mac()
+    return ':'.join(("%012X" % mac)[i:i+2] for i in range(0, 12, 2))
 
 while True:
     _, frame = video_capture.read()
@@ -60,7 +95,7 @@ while True:
     canvas = detect(gray, frame)
     #cv2.imshow('Our Live Sketch', sketch(frame))
     cv2.imshow('Video', canvas)
-   
+
     if  cv2.waitKey(1) == 13: # break when enter is executed
         break
 
@@ -77,7 +112,3 @@ cv2.destroyAllWindows()
 
 
 # In[ ]:
-
-
-
-

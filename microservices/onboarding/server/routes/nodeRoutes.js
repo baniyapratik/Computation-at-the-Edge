@@ -20,7 +20,7 @@ module.exports = app => {
     try {
       await node.save();
       console.log(node);
-      res.send(node);
+      res.status(201).send(node);
     } catch (err) {
       console.log(err);
       res.send(400, err);
