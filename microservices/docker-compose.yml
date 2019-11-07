@@ -5,12 +5,17 @@ services:
     image: redis
     ports:
       - "6379:6379"
+    networks:
+      static-network:
+        ipv4_address: 172.168.3.21
   mongo:
       container_name: "docker-mongod"
       image: mongo
       ports:
         - "27017:27017"
-      
+      networks:
+        static-network:
+          ipv4_address: 172.168.3.22
   onboarding:
     container_name: docker-onboarding
     restart: always
@@ -23,6 +28,9 @@ services:
       - "5001:5001"
     links:
       - mongo
+    networks:
+      static-network:
+        ipv4_address: 172.168.3.23
   monitoring-server:
       container_name: docker-monitoring-server
       restart: always
@@ -40,7 +48,7 @@ services:
         - redis
       networks:
         static-network:
-          ipv4_address: 172.168.3.23
+          ipv4_address: 172.168.3.24
 networks:
   static-network:
     ipam:
