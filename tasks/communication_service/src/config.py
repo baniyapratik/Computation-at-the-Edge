@@ -7,7 +7,8 @@ class Config(object):
     TOKEN_SECRET_KEY = '\x93\xe0q\x0e\xa8\\\xcf\x9fA.\xf2~\x93\n\xd8\xa6\x9f\xec\x96\xddR#\x82Hu\xa4\x05\xedl}s\x1a'
     PERMISSION_SECRET_KEY = "\xd24\xff\xe5\x1c\xd6f[\x1a*\xe5\xf6!\xef.\x94\xd9!\xcco\x04'\x12Q"
 
-    SERVER_LISTENING = '127.0.0.1'
+    #SERVER_LISTENING = '127.0.0.1'
+    SERVER_LISTENING = '0.0.0.0'
     SERVER_SCHEME = 'https'
     ENV = 'config'
 
