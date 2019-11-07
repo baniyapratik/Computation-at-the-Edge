@@ -4,9 +4,7 @@ services:
     image: wurstmeister/zookeeper
     ports:
       - "2181:2181"
-    #networks:
-    #  static-network:
-    #    ipv4_address: 172.168.4.1
+
   kafka1:
     image: wurstmeister/kafka
     ports:
@@ -16,9 +14,6 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_PORT: 9092
       KAFKA_ADVERTISED_PORT: 9092
-    #networks:
-    #  static-network:
-    #    ipv4_address: 172.168.4.2
   
   kafka2:
     image: wurstmeister/kafka
@@ -29,9 +24,6 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_PORT: 9093
       KAFKA_ADVERTISED_PORT: 9093
-    #networks:
-    #  static-network:
-    #    ipv4_address: 172.168.4.3
 
   kafka3:
     image: wurstmeister/kafka
@@ -42,9 +34,6 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_PORT: 9094
       KAFKA_ADVERTISED_PORT: 9094
-    #networks:
-    #  static-network:
-    #    ipv4_address: 172.168.4.4
     
   mqtt:
     image: eclipse-mosquitto:1.6.7
@@ -58,14 +47,3 @@ services:
       KAFKA_SERVER1: kafka1:9092
       KAFKA_SERVER2: kafka2:9092
       KAFKA_SERVER3: kafka3:9092
-      #KAFKA_SERVER1: 172.168.4.2:9092
-      #KAFKA_SERVER2: 172.168.4.3:9093
-      #KAFKA_SERVER3: 172.168.4.4:9094
-    #networks:
-    #  static-network:
-    #    ipv4_address: 172.168.4.5
-#networks:
-#  static-network:
-#    ipam:
-#      config:
-#        - subnet: 172.168.4.0/16
