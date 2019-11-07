@@ -7,7 +7,7 @@ RUN apt-get install vim -y
 RUN apt-get install curl -y
 RUN apt-get install jq -y
 
-COPY communication_service /home/communication_service
+COPY src /home/communication_service
 RUN chmod 755 -R /home/communication_service/*.py
 
 ENV PYTHONPATH "${PYTHONPATH}:/home/"

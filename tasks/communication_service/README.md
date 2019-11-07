@@ -1,31 +1,9 @@
-#### Running Communication Service REST API's
-
-Set the virtual environment
- 
+Build communication service Docker image
 ```
-python3 -m venv your-new-environment
-source your-new-environment/bin/activate
+$ docker build -t communication-service .
 ```
 
-Set PYTHONPATH to git-repo/tasks
-
+To run within Kubernetes environment, within the master node
 ```
-cd ../
-export PYTHONPATH=$(pwd)
+kubectl apply -f communication-service.yml
 ```
-
-Run the application
-
-```
-python3 app.py
-```
-
-Test the REST api's
-
-```
-curl http://localhost:5000/api/communication/test
-```
-
-#### Reference
-
-- https://github.com/baniyapratik/raft_service
