@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from mqtt import MQTT
+import os
 # from mqtt.MQTT import client, server
 
 from communication_service.ext.api import APIResponse
@@ -17,7 +18,9 @@ def publish(topic):
 	#topic = data.get('topic', '')
 	message = data.get('message', '')
 	#client.publish("localhost", topic, message)
-	client.publish("mqtt-broker-service.default.svc.cluster.local", topic, message)
+	#client.publish("mqtt-broker-service.default.svc.cluster.local", topic, message)
+	client.publish(str(os.environ.get('MQTT_BROKER')), topic, message)
+	
 	return APIResponse("Published message: " + message + " to topic: " + topic)
 
 @mod.route('subscribe/<string:topic>', methods=['GET'], strict_slashes=False)
@@ -26,7 +29,8 @@ def subscribe(topic):
 	limit = request.args.get('limit') or 10
 	server = MQTT()
 	#data = server.subscribe("localhost", topic, limit)
-	data = server.subscribe("mqtt-broker-service.default.svc.cluster.local", topic, limit)
+	#data = server.subscribe("mqtt-broker-service.default.svc.cluster.local", topic, limit)
+	data = server.subscribe(str(os.environ.get('MQTT_BROKER')), topic, limit)
 	return APIResponse(data)
 
 @mod.route('/process/<string:topic>', methods=['POST'], strict_slashes=False)

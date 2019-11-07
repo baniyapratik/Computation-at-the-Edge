@@ -45,5 +45,6 @@ services:
       - 5000:5000
     environment:
       KAFKA_SERVER1: kafka1:9092
-      KAFKA_SERVER2: kafka2:9092
-      KAFKA_SERVER3: kafka3:9092
+      KAFKA_SERVER2: kafka2:9093
+      KAFKA_SERVER3: kafka3:9094
+      MQTT_BROKER: mqtt
