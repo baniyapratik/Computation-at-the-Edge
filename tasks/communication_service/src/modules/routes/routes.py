@@ -15,10 +15,7 @@ def test_api():
 def publish(topic):
 	client = MQTT()
 	data = request.get_json()
-	#topic = data.get('topic', '')
 	message = data.get('message', '')
-	#client.publish("localhost", topic, message)
-	#client.publish("mqtt-broker-service.default.svc.cluster.local", topic, message)
 	client.publish(str(os.environ.get('MQTT_BROKER')), topic, message)
 	
 	return APIResponse("Published message: " + message + " to topic: " + topic)
@@ -28,8 +25,6 @@ def subscribe(topic):
 	# limit check ?limit=100
 	limit = request.args.get('limit') or 10
 	server = MQTT()
-	#data = server.subscribe("localhost", topic, limit)
-	#data = server.subscribe("mqtt-broker-service.default.svc.cluster.local", topic, limit)
 	data = server.subscribe(str(os.environ.get('MQTT_BROKER')), topic, limit)
 	return APIResponse(data)
 

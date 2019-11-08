@@ -9,9 +9,6 @@ from communication_service.utils.logger import LogFactory, ModWatchedFileHandler
 def get_kafka_producer():
     print(os.environ.get('KAFKA_SERVER'))
     return KafkaProducer(
-        #bootstrap_servers=['10.46.0.1:9092',
-        #                   '10.38.0.1:9092',
-        #                   '10.40.0.1:9092'],
         bootstrap_servers=[str(os.environ.get('KAFKA_SERVER1')),
                            str(os.environ.get('KAFKA_SERVER2')),
                            str(os.environ.get('KAFKA_SERVER3'))],
@@ -20,9 +17,6 @@ def get_kafka_producer():
 
 def get_kafka_consumer():
     return KafkaConsumer(
-        #bootstrap_servers=['10.46.0.1:9092',
-        #                   '10.38.0.1:9092',
-        #                   '10.40.0.1:9092'],
         bootstrap_servers=[str(os.environ.get('KAFKA_SERVER1')),
                            str(os.environ.get('KAFKA_SERVER2')),
                            str(os.environ.get('KAFKA_SERVER3'))],
