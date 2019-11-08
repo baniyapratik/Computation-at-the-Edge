@@ -1,38 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mqtt-broker
-spec:
-  selector:
-    matchLabels:
-      app: mqtt
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: mqtt
-    spec:
-      containers:
-      - name: eclipse-mosquitto
-        image: eclipse-mosquitto:1.6.7
-        ports:
-          - containerPort: 1883
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mqtt-broker-service
-spec:
-  selector:
-    app: mqtt
-  ports:
-  - protocol: TCP
-    port: 1883
-    targetPort: 1883
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
   name: communication
 spec:
   selector:
@@ -49,6 +17,15 @@ spec:
         image: cliftonf87/communication-service
         ports:
           - containerPort: 5000
+        env:
+        - name: KAFKA_SERVER1
+          value: kafka-service:9092
+        - name: KAFKA_SERVER2
+          value: kafka-service:9092
+        - name: KAFKA_SERVER3
+          value: kafka-service:9092
+        - name: MQTT_BROKER
+          value: mqtt-broker-service
 ---
 apiVersion: v1
 kind: Service
