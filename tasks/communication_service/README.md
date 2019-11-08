@@ -11,5 +11,6 @@ docker-compose up -d
 
 To run within Kubernetes environment, within the master node
 ```
-kubectl apply -f communication-service.yml
+cd kubernetes
+kubectl apply -f ./
 ```
