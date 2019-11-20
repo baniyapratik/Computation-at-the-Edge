@@ -127,3 +127,20 @@ pi@master-node:~ $ sudo service nfs-kernel-server restart
 ```JSON
 sudo mount master-node:/nfs /nfs
 ```
+
+### auto mount after bootup
+```
+pi@slave-1:/nfs $ vim /etc/fstab 
+master-node:/nfs	/nfs	nfs	defaults,rw,exec	0	0
+
+pi@slave-1:/nfs $ vim /etc/rc.local 
+# Automatically mount network drives
+printf "Waiting a bit before mounting netowrk drives...\n"
+sleep 10
+printf "Mounting network drives...\n"
+mount -a
+
+pi@slave-1:/nfs $ mount -a
+```
+
+
