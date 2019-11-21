@@ -30,8 +30,8 @@ spec:
       hostname: zookeeper
       containers:
       - name: zookeeper
-        #image: sumglobal/rpi-zookeeper
-        image: wurstmeister/zookeeper
+        image: sumglobal/rpi-zookeeper
+        #image: wurstmeister/zookeeper
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 2181 

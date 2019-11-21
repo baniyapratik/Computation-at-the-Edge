@@ -23,6 +23,7 @@ kind: Service
 metadata:
   name: mqtt-broker-service
 spec:
+  type: NodePort
   selector:
     app: mqtt
   ports:

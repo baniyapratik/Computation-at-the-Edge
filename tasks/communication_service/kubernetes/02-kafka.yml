@@ -29,8 +29,8 @@ spec:
     spec:
       containers:
       - name: kafka
-        #image: sumglobal/rpi-kafka
-        image: wurstmeister/kafka
+        image: sumglobal/rpi-kafka
+        #image: wurstmeister/kafka
         imagePullPolicy: IfNotPresent
         env:
         - name: KAFKA_ZOOKEEPER_CONNECT
